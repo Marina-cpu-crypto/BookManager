@@ -1,3 +1,8 @@
+Ссылка-доказательство, что в дедлайн успели
+https://github.com/SoslanKalkhiev/BookManager/commit/21a86b9fd76b245d047e0d7f9c161f905ad1bc97
+
+
+
 [README.md](https://github.com/user-attachments/files/27368569/README.md)
 # Менеджер любимых книг
 
