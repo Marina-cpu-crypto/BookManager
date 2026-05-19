@@ -1,7 +1,12 @@
+using Documents.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<IBookRepository, AllBooksFromFile>();
+builder.Services.AddSingleton<ICollectionsRepository, GetAllCollections>();
 
 var app = builder.Build();
 
