@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "8541406f-951d-4491-9b33-e710a7117928",
+    "Name": "Hero",
+    "Author": "М.Ю. Лермонтов",
+    "Genre": "Поэма",
+    "Description": "Barsssssssssss",
+    "IsRead": true
+  },
+  {
+    "Id": "8541406f-951d-4491-9b33-e710a7117929",
+    "Name": "Ghost",
+    "Author": "Anna",
+    "Genre": "Экшен",
+    "Description": "Barsssssssssss",
+    "IsRead": true
+  }
+]
