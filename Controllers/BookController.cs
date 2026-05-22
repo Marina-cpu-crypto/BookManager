@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Documents.Data;
 using Documents.Models;
@@ -7,11 +7,13 @@ namespace Documents.Controllers
 {
     public class BookController : Controller
     {
-        IBookRepository bookRepository;
+        private readonly IBookRepository bookRepository;
+        private readonly ICollectionsRepository collectionsRepository;
 
-        public BookController(IBookRepository bookRep)
+        public BookController(IBookRepository bookRep, ICollectionsRepository collectRep)
         {
             this.bookRepository = bookRep;
+            this.collectionsRepository = collectRep;
         }
 
         public IActionResult Index(Guid id)
@@ -19,7 +21,7 @@ namespace Documents.Controllers
             var book = bookRepository.TryGetById(id);
             if (book == null)
                 return NotFound();
-
+            
             return View(book);
         }
 
@@ -28,7 +30,7 @@ namespace Documents.Controllers
             var book = bookRepository.TryGetById(id);
             if (book == null)
                 return NotFound();
-
+            
             return View(book);
         }
 
@@ -39,8 +41,11 @@ namespace Documents.Controllers
                 return NotFound();
 
             book.IsRead = !book.IsRead;
-            SaveBooksToFile();
 
+            var books = bookRepository.GetAll();
+            var collections = collectionsRepository.GetAll();
+            SaveToFile(books, collections);
+            
             return RedirectToAction("Index", new { id = id });
         }
 
@@ -50,16 +55,21 @@ namespace Documents.Controllers
             if (book == null)
                 return NotFound();
 
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Author))
+                return BadRequest("Название и автор обязательны");
+
             book.Name = Name;
             book.Author = Author;
             book.Genre = Genre;
             book.Description = Description;
             book.IsRead = IsRead;
-
+            
             if (!string.IsNullOrEmpty(Review))
                 book.Review = Review;
 
-            SaveBooksToFile();
+            var books = bookRepository.GetAll();
+            var collections = collectionsRepository.GetAll();
+            SaveToFile(books, collections);
 
             return RedirectToAction("Index", new { id = Id });
         }
@@ -68,22 +78,25 @@ namespace Documents.Controllers
         {
             var books = bookRepository.GetAll();
             var bookToRemove = books.FirstOrDefault(b => b.Id == Id);
-
+            
             if (bookToRemove != null)
             {
                 books.Remove(bookToRemove);
-                SaveBooksToFile();
+                var collections = collectionsRepository.GetAll();
+                SaveToFile(books, collections);
             }
 
             return RedirectToAction("Index", "Home");
         }
 
-        private void SaveBooksToFile()
+        private void SaveToFile(List<Book> books, List<Collection> collections)
         {
-            var books = bookRepository.GetAll();
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(books, options);
-            System.IO.File.WriteAllText("Data/books.json", json);
+            string booksJson = JsonSerializer.Serialize(books, options);
+            string collectionsJson = JsonSerializer.Serialize(collections, options);
+            
+            System.IO.File.WriteAllText("Data/books.json", booksJson);
+            System.IO.File.WriteAllText("Data/collections.json", collectionsJson);
         }
     }
 }
