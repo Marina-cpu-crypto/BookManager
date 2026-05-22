@@ -1,0 +1,89 @@
+@model Documents.Models.Book
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<h1>Редактирование книги</h1>
+
+<hr />
+
+@if (Model != null)
+{
+    <form action="/Book/Save" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        
+        <div>
+            <label>Название:</label>
+            <input type="text" name="Name" value="@Model.Name" required />
+        </div>
+        
+        <div>
+            <label>Автор:</label>
+            <input type="text" name="Author" value="@Model.Author" required />
+        </div>
+        
+        <div>
+            <label>Жанр:</label>
+            <input type="text" name="Genre" value="@Model.Genre" />
+        </div>
+        
+        <div>
+            <label>Описание:</label>
+            <textarea name="Description">@Model.Description</textarea>
+        </div>
+        
+        <div>
+            <label>Прочитана:</label>
+            <input type="checkbox" name="IsRead" @(Model.IsRead ? "checked" : "") />
+        </div>
+        
+        <div>
+            <label>Рецензия:</label>
+            <textarea name="Review">@Model.Review</textarea>
+        </div>
+        
+        <button type="submit">Сохранить</button>
+        <a href="/Book/Index?id=@Model.Id">Отмена</a>
+    </form>
+}
+else
+{
+    <p><em>Книга не найдена</em></p>
+}
+
+<style>
+    input, textarea {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0 15px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        margin-left: 10px;
+        padding: 8px 15px;
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    a:hover {
+        background-color: #5a6268;
+    }
+</style>
