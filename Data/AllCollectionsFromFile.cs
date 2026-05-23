@@ -1,4 +1,3 @@
-﻿using Documents.Data;
 using System.Text.Json;
 using Documents.Models;
 
@@ -6,25 +5,28 @@ namespace Documents.Data
 {
     public class GetAllCollections : ICollectionsRepository
     {
-        private static List<Collection> collections = new List<Collection>();
-
-        public GetAllCollections()
-        {
-            string jsonString = File.ReadAllText("Data/collections.json");
-            collections = JsonSerializer.Deserialize<List<Collection>>(jsonString);
-        }
+        private const string CollectionsFilePath = "Data/collections.json";
 
         public List<Collection> GetAll()
         {
-            string jsonString = File.ReadAllText("Data/collections.json");
-            collections = JsonSerializer.Deserialize<List<Collection>>(jsonString);
+            try
+            {
+                if (!File.Exists(CollectionsFilePath))
+                    return new List<Collection>();
 
-            return collections;
+                string jsonString = File.ReadAllText(CollectionsFilePath);
+                
+                if (string.IsNullOrWhiteSpace(jsonString))
+                    return new List<Collection>();
+
+                var collections = JsonSerializer.Deserialize<List<Collection>>(jsonString);
+                return collections ?? new List<Collection>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при загрузке коллекций: {ex.Message}");
+                return new List<Collection>();
+            }
         }
-
-        //public string? TryGetById(Guid id)
-        //{
-        //    return collections.FirstOrDefault(c => c.CollectionId == id);
-        //}
     }
 }
