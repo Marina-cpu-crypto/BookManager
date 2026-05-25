@@ -1,10 +1,4 @@
-@model List<Collection>
-
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div style="display:flex; justify-content:center; margin:25px 0;">
+﻿<div style="display:flex; justify-content:center; margin:25px 0;">
 
     <form method="get"
           asp-controller="Home"
@@ -17,6 +11,7 @@
         <input class="search-input" placeholder="Описание" name="Description" value="@Context.Request.Query["Description"]" />
         <input class="search-input small-input" type="number" placeholder="От" name="from" value="@Context.Request.Query["from"]" />
         <input class="search-input small-input" type="number" placeholder="До" name="to" value="@Context.Request.Query["to"]" />
+
         <button type="submit" class="search-button">
             Найти
         </button>
@@ -28,7 +23,6 @@
         </a>
 
     </form>
-
 </div>
 
 <div style="padding:30px;">
@@ -37,9 +31,7 @@
     {
         <div style="margin-bottom:60px;">
 
-            <h2 style="margin-bottom:30px; font-weight:700; font-size:32px;">
-                @item.Name
-            </h2>
+            <h2 style="margin-bottom:30px; font-weight:700; font-size:32px;">@item.Name</h2>
 
             @{
                 var books = item.Books.OrderByDescending(b => b.Rating).ToList();
@@ -63,13 +55,9 @@
                             <div class="book-info"
                                  style="position:absolute; bottom:0; left:0; width:100%; padding:20px; background:linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0)); color:white;">
 
-                                <h4 style="margin:0; font-size:22px; font-weight:700;">
-                                    @book.Name
-                                </h4>
+                                <h4 style="margin:0; font-size:22px; font-weight:700;">@book.Name</h4>
 
-                                <p style="margin-top:5px; font-size:16px;">
-                                    @book.Author
-                                </p>
+                                <p style="margin-top:5px; font-size:16px;">@book.Author</p>
 
                             </div>
 

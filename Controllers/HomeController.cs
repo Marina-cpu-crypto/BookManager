@@ -1,32 +1,69 @@
-using Documents.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using System.Text.Json;
+using Documents.Data;
+using Documents.Models;
 
 namespace Documents.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ICollectionsRepository collectionsRepository;
+        private readonly IBookRepository bookRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ICollectionsRepository collectRep, IBookRepository bookRep)
         {
-            _logger = logger;
+            this.collectionsRepository = collectRep;
+            this.bookRepository = bookRep;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var collections = collectionsRepository.GetAll();
+            return View(collections);
         }
 
-        public IActionResult Privacy()
+        public IActionResult AddNew(string Name, string Author, string Genre, string Description, bool IsRead, string? Review)
         {
-            return View();
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Author))
+            {
+                return BadRequest("Название и автор обязательны");
+            }
+
+            Book book = new Book(Name, Author, Genre, Description);
+            
+            if (!string.IsNullOrEmpty(Review))
+                book.Review = Review;
+
+            book.IsRead = IsRead;
+            
+            var books = bookRepository.GetAll();
+            books.Add(book);
+
+            // Добавляем книгу в соответствующую коллекцию
+            var collections = collectionsRepository.GetAll();
+            if (IsRead && collections.Count > 1)
+            {
+                collections[1].Books.Add(book.Id, book.Name);
+            }
+            else if (!IsRead && collections.Count > 0)
+            {
+                collections[0].Books.Add(book.Id, book.Name);
+            }
+
+            SaveToFile(books, collections);
+
+            return RedirectToAction("Index");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        private void SaveToFile(List<Book> books, List<Collection> collections)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var options = new JsonSerializerOptions { WriteIndented = true };
+
+            string newbook = JsonSerializer.Serialize(books, options);
+            string newcoll = JsonSerializer.Serialize(collections, options);
+            
+            System.IO.File.WriteAllText("Data/books.json", newbook);
+            System.IO.File.WriteAllText("Data/collections.json", newcoll);
         }
     }
 }

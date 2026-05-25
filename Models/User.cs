@@ -1,21 +1,23 @@
-﻿namespace Documents.Models
+﻿namespace WriterApp.Models
 {
     public class User
     {
-        public Guid UserId { get; }
-        public string Name { get; set; }
-        public string Password { get; set; }
+        public Guid UserId { get; set; }
+        public string NickName { get; set; }
         public string Email { get; set; }
-        public string UserImage { get; set; } = string.Empty;
+        public List<Collection> Collections { get; set; }
 
-        public User(string name, string password, string email)
+        public User(string nickName, string email)
         {
             UserId = Guid.NewGuid();
-            Name = name;
-            Password = password;
+            NickName = nickName;
             Email = email;
+            Collections = new List<Collection>()
+            {
+                new Collection(0,"В процессе"),
+                new Collection(1,"Завершено")
+            };
+
         }
-
-
     }
 }

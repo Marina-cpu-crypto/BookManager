@@ -1,24 +1,28 @@
-﻿namespace Documents.Models
+﻿namespace WriterApp.Models
 {
     public class Book
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Author { get; set; }
-        public string Genre { get; set; } //Жанр
-        public string Description { get; set; }
-        //public DateOnly Date { get; set; } =???   //Дата (чего? Написания, добавления?)
-        public bool IsRead{ get; set; } = false; //Прочтена или нет
-        public string? Review { get; set; }  //Пользовательские заметки, рецензия
+        public string Genre { get; set; }
+        public bool IsDone { get; set; }
+        public int Rating { get; set; } = 0;
+        public string Description { get; set; } = "";
+        public string? PathImage { get; set; } = "";
+        public int? PageNumber { get; set; }
 
-        public Book(string name, string author, string genre, string description)
+
+        public Book(string name, string author, string genre, bool isdone, string description = ""/*, List<List<string>>? matherials*/)
         {
             Id = Guid.NewGuid();
+
             Name = name;
             Author = author;
             Genre = genre;
+            IsDone = isdone;
             Description = description;
-        }
 
+        }
     }
 }
