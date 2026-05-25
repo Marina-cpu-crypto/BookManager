@@ -1,22 +1,140 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+
+.navbar-brand-custom {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #0077cc !important;
+    letter-spacing: -0.3px;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+    .navbar-brand-custom:hover {
+        color: #1b6ec2 !important;
+        background-color: rgba(0, 119, 204, 0.08);
+        transform: translateY(-2px);
+    }
+
+footer {
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.book-card {
+    transition: 0.3s;
+}
+
+.book-info {
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.book-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+    .book-card:hover .book-info {
+        opacity: 1;
+    }
+
+.search-input {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 12px;
+    background: #f3f5f7;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+    .search-input:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(37,140,251,0.2);
+    }
+
+.small-input {
+    width: 70px;
+}
+
+.search-button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #258cfb;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+    .search-button:hover {
+        background: #1877e6;
+        transform: translateY(-1px);
+    }
+
+.reset-button {
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: #eceff3;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+    .reset-button:hover {
+        background: #dfe3e8;
+        color: black;
+    }
+
+.compact-input {
+    width: 150px;
+}
+
+.select-input {
+    appearance: none;
+    cursor: pointer;
+}
+
+.placeholder-select {
+    color: #6c757d;
+}
+
+.image-input {
+    width: 190px;
 }

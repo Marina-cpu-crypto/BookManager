@@ -1,89 +1,68 @@
-@model Documents.Models.Book
+@model Book
+
 @{
-    ViewData["Title"] = "Редактирование";
+    ViewData["Title"] = "Подробнее о книге";
+
+    string booktext = "";
+    string file = "Data/Texts/" + @Model.Name + ".txt";
+    if (File.Exists(file)) booktext = string.Join(" ", File.ReadLines(file).Take(3));
 }
 
-<h1>Редактирование книги</h1>
 
-<hr />
+<form>
+    <p>
+        <label>Название</label> <input type="text" value="@Model.Name" style="width:auto;" name="Name" />
+        <label>Автор</label> <input type="text" value="@Model.Author" style="width:auto;" name="Author" />
+        <label>Жанр</label> <input type="text" value="@Model.Genre" style="width:auto;" name="Genre" />
+    </p>
+    <div style="display:flex; flex-direction:row">
+        <p>
+            <label>Текст</label><br />
+            <textarea style="height:400px; width:800px; margin-inline:60px;"
+                      @* value="@booktext" *@
+                      name="bookText"
+                      rows="10" cols="50">@booktext</textarea>
 
-@if (Model != null)
-{
-    <form action="/Book/Save" method="post">
-        <input type="hidden" name="Id" value="@Model.Id" />
-        
-        <div>
-            <label>Название:</label>
-            <input type="text" name="Name" value="@Model.Name" required />
-        </div>
-        
-        <div>
-            <label>Автор:</label>
-            <input type="text" name="Author" value="@Model.Author" required />
-        </div>
-        
-        <div>
-            <label>Жанр:</label>
-            <input type="text" name="Genre" value="@Model.Genre" />
-        </div>
-        
-        <div>
-            <label>Описание:</label>
-            <textarea name="Description">@Model.Description</textarea>
-        </div>
-        
-        <div>
-            <label>Прочитана:</label>
-            <input type="checkbox" name="IsRead" @(Model.IsRead ? "checked" : "") />
-        </div>
-        
-        <div>
-            <label>Рецензия:</label>
-            <textarea name="Review">@Model.Review</textarea>
-        </div>
-        
-        <button type="submit">Сохранить</button>
-        <a href="/Book/Index?id=@Model.Id">Отмена</a>
+            @* <input type="text"  /><br /> *@
+
+            <div class="w-30">
+                <p>
+                    <label>Текущее описание сюжета</label><br />
+                    <input type="text" style="width:350px; height:200px;" value="@Model.Description" name="Description" />
+                </p>
+
+            </div>
+    </div>
+
+    <button class="btn btn-outline-success"
+            type="submit"
+            asp-controller="Book"
+            asp-action="Save"
+            asp-route-Id="@Model.Id">
+        Сохранить изменения
+    </button>
+
+</form>
+
+<p>
+    <label>Изображение-обложка</label><br />
+    <img src="@Model.PathImage" style="width:350px; height:350px; margin:30px;" />
+
+    <form>
+        <button type="submit" asp-controller="Book" asp-action="ChangeImage" asp-route-id="@Model.Id">Заменить изображение:</button>
+        <input placeholder="Ссылка на изображение" name="PathImage" />
     </form>
-}
-else
-{
-    <p><em>Книга не найдена</em></p>
-}
+</p>
 
-<style>
-    input, textarea {
-        width: 100%;
-        padding: 8px;
-        margin: 5px 0 15px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+<a class="btn btn-outline-danger"
+   asp-controller="Book"
+   asp-action="Delete"
+   asp-route-Id="@Model.Id">Удалить книгу</a>
 
-    button {
-        padding: 8px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
 
-    button:hover {
-        background-color: #0056b3;
-    }
-
-    a {
-        margin-left: 10px;
-        padding: 8px 15px;
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        display: inline-block;
-    }
-
-    a:hover {
-        background-color: #5a6268;
-    }
-</style>
+@* <form>
+    <input type="text" placeholder="@Model.Name" style="width:auto;" name="Name" />
+    <input type="text" style="height:400px; width:800px; margin-inline:60px;" name="bookText" /><br />
+    <input type="text" style="width:350px; height:200px;" name="Description" />
+    <button class="btn btn-outline-success" type="submit" asp-controller="Book" asp-action="Save" asp-route-Id="@Model.Id"> Сохранить изменения </button>
+</form> *@

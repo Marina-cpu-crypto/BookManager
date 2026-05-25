@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Добавление книги";
+}
+
+<div style="display:flex; justify-content:center; margin-top:60px;">
+
+    <form method="get"
+          asp-controller="Home"
+          asp-action="AddNew"
+          style="display:flex; align-items:center; justify-content:center; gap:10px; padding:18px; border-radius:20px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.12); width:max-content; margin:auto;">
+
+        <input required class="search-input compact-input" placeholder="Название" name="Name" />
+        <input required class="search-input compact-input" placeholder="Автор" name="Author" />
+        <input required class="search-input compact-input" placeholder="Жанр" name="Genre" />
+
+        <select required class="search-input compact-input select-input placeholder-select" name="IsDone">
+            <option value="">Статус</option>
+            <option value="false">В процессе</option>
+            <option value="true">Завершено</option>
+        </select>
+
+        <input class="search-input compact-input" placeholder="Описание" name="Description" />
+        <input class="search-input image-input" placeholder="Ссылка на обложку" name="PathImage" />
+
+        <button type="submit" class="search-button">Добавить книгу</button>
+
+    </form>
+
+</div>
