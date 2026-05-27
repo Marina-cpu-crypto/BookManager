@@ -1,38 +1,117 @@
+﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
+using Documents.Data;
 using Documents.Models;
+using Documents.Controllers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Documents.Data
 {
     public class AllBooksFromFile : IBookRepository
     {
-        private const string BooksFilePath = "Data/books.json";
+        ICollectionsRepository collectionsRepository;
+        public Guid MainId = Guid.Parse(File.ReadAllText("Data/MainId.txt"));
+        private static List<Book> books = new List<Book>();
+        private static List<Collection> collections;
+
+        public AllBooksFromFile(ICollectionsRepository collectRep)
+        {
+            collections = collectRep.GetOne(MainId);
+            string jsonString = File.ReadAllText("Data/books.json");
+            books = JsonSerializer.Deserialize<List<Book>>(jsonString);
+        }
 
         public List<Book> GetAll()
         {
-            try
-            {
-                if (!File.Exists(BooksFilePath))
-                    return new List<Book>();
-
-                string jsonString = File.ReadAllText(BooksFilePath);
-                
-                if (string.IsNullOrWhiteSpace(jsonString))
-                    return new List<Book>();
-
-                var books = JsonSerializer.Deserialize<List<Book>>(jsonString);
-                return books ?? new List<Book>();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при загрузке книг: {ex.Message}");
-                return new List<Book>();
-            }
+            return books;
         }
 
         public Book? TryGetById(Guid id)
         {
-            var books = GetAll();
             return books.FirstOrDefault(book => book.Id == id);
         }
+
+        public void ChangeStatus(Book book, bool status)
+        {
+            if (status)
+            {
+                collections[1].Books.Add(book);
+                this.RemoveBookFromCollection(book, 0);
+
+                collections[1].Amount++;
+                collections[0].Amount--;
+            }
+            else
+            {
+                collections[0].Books.Add(book);
+                this.RemoveBookFromCollection(book, 1);
+
+                collections[0].Amount++;
+                collections[1].Amount--;
+            }
+            this.Resave();
+        }
+
+        public void Change(Book book)
+        {
+            int ind = 0;
+            if (book.IsDone) ind = 1;
+
+            this.RemoveBookFromCollection(book, ind);
+            collections[ind].Books.Add(book);
+
+            this.Resave();
+        }
+
+        public void Delete(Book book)
+        {
+            for (int i = 0; i < books.Count; i++)
+            {
+                if (books[i].Id == book.Id)
+                {
+                    System.IO.File.Delete("Data/Texts/" + books[i].Name + ".txt");
+
+                    if (books[i].IsDone) RemoveBookFromCollection(book,1);
+                    else this.RemoveBookFromCollection(book,0);
+
+                    books.RemoveAt(i);
+                    break;
+                }
+            }
+
+            this.Resave();
+
+        }
+
+        public void Resave()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true }; // добавляет отступы и переносы строк
+
+            string newbooks = JsonSerializer.Serialize(books, options);
+            File.WriteAllText("Data/books.json", newbooks);
+
+            collectionsRepository.ResaveUserData(collections);
+            //this.Sort();
+            //string newcol = JsonSerializer.Serialize(collections, options);
+            //File.WriteAllText("Data/collections.json", newcol);
+        }
+
+        public void RemoveBookFromCollection(Book book, int ind)
+        {
+            for (int i = 0; i < collections[ind].Books.Count; i++)
+            {
+                if (collections[ind].Books[i].Id == book.Id)
+                {
+                    collections[ind].Books.RemoveAt(i);
+                    //collections[ind].Books.Add(book);
+                    break;
+                }
+            }
+        }
+        //public void Sort()
+        //{
+        //    collections[0].Books.OrderByDescending(b => b.Rating);
+        //    collections[1].Books.OrderByDescending(b => b.Rating);
+        //}
     }
 }

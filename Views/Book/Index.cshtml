@@ -1,4 +1,4 @@
-@model Book
+﻿@model Book
 @{
     ViewData["Title"] = "Подробнее о книге";
     string status;
@@ -9,54 +9,52 @@
 
     string booktext = "";
     string file = "Data/Texts/" + @Model.Name + ".txt";
-    if (File.Exists(file)) booktext = string.Join(" ", File.ReadLines(file).Take(3));
+    if(File.Exists(file)) booktext= string.Join(" ",File.ReadLines(file).Take(3));
 
 }
 
-<div>
+    <div>
 
-    <div style="width: 40rem; margin-inline: 2rem; display:flex; flex-direction:row">
-        <div style="width: 18rem; margin-inline: 2rem">
+        <div style="width: 40rem; margin-inline: 2rem; display:flex; flex-direction:row">
+            <div style="width: 18rem; margin-inline: 2rem">
             <h3 style="width: 300px;">@Model.Name</h3>
-            <p style="margin: 20px; width:200px;">Автор:@Model.Author</p>
-            <p style="margin: 20px; width:200px;">Жанр:@Model.Genre</p>
+            <p  style="margin: 20px; width:200px;">Автор:@Model.Author</p>
+            <p  style="margin: 20px; width:200px;">Жанр:@Model.Genre</p>
 
-            <p>Кратко сюжет:</p>
-            <input style="width:300px; height:100px;" value="@Model.Description">
-        </div>
+                <p>Кратко сюжет:</p>
+                <input style="width:300px; height:100px;" value="@Model.Description">
+            </div>
         <img style="width:400px; height:400px; margin-inline: 2rem;" src="@Model.PathImage">
-    </div>
+        </div>
 
-    <div style="display:flex; flex-direction:column;">
-        <p>Ваша рецензия:</p>
-        <input style="width:900px; height:100px;" value="@booktext" readonly />
+        <div style="display:flex; flex-direction:column;">
+            <p>Ваша рецензия:</p>
+            <input style="width:900px; height:100px;" value="@booktext" readonly/>
 
-        <p class="accordion-item" style="margin: 20px; width:100px;">@status</p>
+            <p class="accordion-item" style="margin: 20px; width:100px;">@status</p>
 
-        <a class="btn btn-primary"
+            <a class="btn btn-primary"
            style="margin: 20px; width:200px;"
            asp-controller="Book"
-           asp-action="ChangeStatus"
-           asp-route-id="@Model.Id">Сменить статус</a><p></p>
+            asp-action="ChangeStatus"
+            asp-route-id="@Model.Id">Сменить статус</a><p></p>
 
-        <form>
-            <input type="number" name="rating" placeholder="@Model.Rating" />
-            <button class="btn btn-outline-success"
-                    type="submit"
-                    asp-controller="Book"
-                    asp-action="SetRating"
-                    asp-route-Id="@Model.Id">
-                Сохранить
-            </button>
-        </form>
+            <form>
+                <input type="number" name="rating" placeholder="@Model.Rating"/>
+                <button class="btn btn-outline-success"
+                        type="submit"
+                        asp-controller="Book"
+                        asp-action="SetRating"
+                        asp-route-Id="@Model.Id">Сохранить</button>
+            </form>
 
-        <a class="btn btn-primary"
-           style="margin: 20px; width:300px;"
-           asp-controller="Book"
-           asp-action="Redact"
-           asp-route-id="@Model.Id">Редактировать</a>
-    </div>
-</div>
+            <a class="btn btn-primary"
+            style="margin: 20px; width:300px;"
+            asp-controller="Book"
+            asp-action="Redact"
+            asp-route-id="@Model.Id">Редактировать</a>
+        </div>
+    </div> 
 
 
 @* <div class="card" style="width: 18rem;">
