@@ -4,8 +4,9 @@
     ViewData["Title"] = "Подробнее о книге";
 
     string booktext = "";
-    string file = "Data/Texts/" + @Model.Name + ".txt";
-    if (File.Exists(file)) booktext = string.Join(" ", File.ReadLines(file).Take(3));
+    Guid MainId = Guid.Parse(System.IO.File.ReadAllText("Data/MainId.txt"));
+    string file = "Data/" + MainId + "/Texts/" + @Model.Name + ".txt";  // исправлено отображение рецензии
+    if (File.Exists(file)) booktext = string.Join(" ", File.ReadLines(file));
 }
 
 

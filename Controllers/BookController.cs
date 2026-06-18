@@ -63,7 +63,10 @@ namespace Documents.Controllers
 
             if(book.Name != Name)
             {
-                System.IO.File.Delete("Data/"+MainId+"/Texts/"+book.Name+".txt");
+
+                string oldFile = "Data/" + MainId + "/Texts/" + book.Name + ".txt";
+                if(System.IO.File.Exists(oldFile))    // добавление проверки
+                    System.IO.File.Delete(oldFile);
                 book.Name = Name;
             }
             book.Author = Author;
@@ -72,7 +75,9 @@ namespace Documents.Controllers
             book.PathImage = PathImage;
 
             string file = "Data/" + MainId + "/Texts/" + Name + ".txt";
-            System.IO.File.WriteAllText(file, bookText);
+            System.IO.Directory.CreateDirectory(Path.GetDirectoryName(file)); // исправило баг (?)
+            if (!string.IsNullOrEmpty(bookText)) // проверка на нулл
+                System.IO.File.WriteAllText(file, bookText);
 
             bookRepository.Change(book);
 

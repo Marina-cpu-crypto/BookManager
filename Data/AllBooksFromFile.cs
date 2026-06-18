@@ -9,8 +9,11 @@ namespace Documents.Data
 {
     public class AllBooksFromFile : IBookRepository
     {
+        // поиск по абсолютному пути
         ICollectionsRepository collectionsRepository;
-        public Guid MainId = Guid.Parse(File.ReadAllText("Data/MainId.txt"));
+        private static readonly string DataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..");
+
+        public Guid MainId = Guid.Parse(File.ReadAllText(Path.Combine(DataPath, "Data/MainId.txt")));
 
         private static List<Collection> collections;
 
@@ -18,7 +21,25 @@ namespace Documents.Data
         {
             this.collectionsRepository = collectRep;
             collections = collectRep.GetOne(MainId);
-            string jsonString = File.ReadAllText("Data/" + MainId + "/books.json");
+            string jsonPath = Path.Combine(DataPath, "Data", MainId.ToString(), "books.json");
+            
+            // Проверка существования файла букс
+            if (!File.Exists(jsonPath))
+            {
+                var directory = Path.GetDirectoryName(jsonPath);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+                
+                
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                var emptyBooks = new List<Book>();
+                string emptyJson = System.Text.Json.JsonSerializer.Serialize(emptyBooks, options);
+                File.WriteAllText(jsonPath, emptyJson);
+            }
+            
+            string jsonString = File.ReadAllText(jsonPath);
 
         }
         public void Resave() { collectionsRepository.ResaveUserData(collections); }
@@ -61,7 +82,11 @@ namespace Documents.Data
         {
             this.MainId = Guid.Parse(File.ReadAllText("Data/MainId.txt"));
             var book = collectionsRepository.TryGetById(id);
-            System.IO.File.Delete("Data/" + MainId + "/Texts/" + book.Name + ".txt");
+            string filePath = "Data/" + MainId + "/Texts/" + book.Name + ".txt";
+            if (System.IO.File.Exists(filePath)) // добавление проверки перед удалением
+            {
+                System.IO.File.Delete(filePath);
+            }
 
             if (book.IsDone) RemoveBookFromCollection(book, 1);
             else this.RemoveBookFromCollection(book, 0);

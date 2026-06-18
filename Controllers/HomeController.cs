@@ -39,16 +39,16 @@ namespace Documents.Controllers
             if(!string.IsNullOrEmpty(PathImage))  book.PathImage= PathImage;
             
 
-            if (IsDone)
+            // исправлен баг с пустой библиотекой
+            var target = collections?.FirstOrDefault(c => c.Id == (IsDone ? 1 : 0));
+            if (target == null)
             {
-                collections[1].Books.Add(book);
-                collections[1].Amount++;
+                target = new Collection(IsDone ? 1 : 0, IsDone ? "Завершено" : "В процессе");
+                collections ??= new List<Collection>();
+                collections.Add(target);
             }
-            else
-            {
-                collections[0].Books.Add(book);
-                collections[0].Amount++;
-            }
+            target.Books.Add(book);
+            target.Amount = target.Books.Count;
 
             var options = new JsonSerializerOptions { WriteIndented = true };
 
