@@ -1,80 +1,112 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Documents.Data;
-using Documents.Models;
-using static System.Reflection.Metadata.BlobBuilder;
+using WriterApp.Data;
+using WriterApp.Models;
+using WriterApp.Controllers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Documents.Data
+namespace WriterApp.Data
 {
-    public class AllCollectionsFromFile : ICollectionsRepository
+    public class AllBooksFromFile : IBookRepository
     {
+        ICollectionsRepository collectionsRepository;
         public Guid MainId = Guid.Parse(File.ReadAllText("Data/MainId.txt"));
-        private static List<UserData> collections = new List<UserData>();
 
-        public AllCollectionsFromFile()
+        private static List<Collection> collections;
+
+        public AllBooksFromFile(ICollectionsRepository collectRep)
         {
-            string jsonString = File.ReadAllText("Data/collections.json");
-            collections = JsonSerializer.Deserialize<List<UserData>>(jsonString);
+            this.collectionsRepository = collectRep;
+            collections = collectRep.GetOne(MainId);
+            string jsonString = File.ReadAllText("Data/" + MainId + "/books.json");
+
+        }
+        public void Resave() { collectionsRepository.ResaveUserData(collections); }
+
+        public void ChangeStatus(Guid id)
+        {
+            var book = collectionsRepository.TryGetById(id);
+            book.IsDone = !book.IsDone;
+            if (book.IsDone)
+            {
+                collections[1].Books.Add(book);
+                this.RemoveBookFromCollection(book, 0);
+
+                collections[1].Amount++;
+                collections[0].Amount--;
+            }
+            else
+            {
+                collections[0].Books.Add(book);
+                this.RemoveBookFromCollection(book, 1);
+
+                collections[0].Amount++;
+                collections[1].Amount--;
+            }
+            this.Resave();
         }
 
-        public List<Collection> GetOne(Guid id)
+        public void Change(Book book)
         {
-            string jsonString = File.ReadAllText("Data/collections.json");
-            collections = JsonSerializer.Deserialize<List<UserData>>(jsonString);
+            int ind = 0;
+            if (book.IsDone) ind = 1;
 
-            List<Collection> list = new List<Collection>();
-            foreach (var collection in collections)
+            this.RemoveBookFromCollection(book, ind);
+            collections[ind].Books.Add(book);
+
+            this.Resave();
+        }
+
+        public void Delete(Guid id)
+        {
+            this.MainId = Guid.Parse(File.ReadAllText("Data/MainId.txt"));
+            var book = collectionsRepository.TryGetById(id);
+            System.IO.File.Delete("Data/" + MainId + "/Texts/" + book.Name + ".txt");
+
+            if (book.IsDone) RemoveBookFromCollection(book, 1);
+            else this.RemoveBookFromCollection(book, 0);
+
+            this.Resave();
+
+        }
+        public void RemoveBookFromCollection(Book book, int ind)
+        {
+            this.MainId = Guid.Parse(File.ReadAllText("Data/MainId.txt"));
+            collections = collectionsRepository.GetOne(MainId);
+            for (int i = 0; i < collections[ind].Books.Count; i++)
             {
-                if(collection.DataId == id)
+                if (collections[ind].Books[i].Id == book.Id)
                 {
-                    list = collection.Collections;
+                    collections[ind].Books.RemoveAt(i);
                     break;
                 }
             }
-            
-            return list;
         }
 
-        public void ResetCollection()
-        {
-            string jsonString = File.ReadAllText("Data/books.json");
-            List<Book> books = JsonSerializer.Deserialize<List<Book>>(jsonString);
 
-            var thiscoll = this.GetOne(MainId);
 
-            foreach (var book in books)
-            {
-                int ind = 0;
-                bool flag = false;
-                if (book.IsDone) ind = 1;
+        //public void Resave()
+        //{
+        //    var options = new JsonSerializerOptions { WriteIndented = true }; // добавляет отступы и переносы строк
 
-                foreach (var b in thiscoll[ind].Books) if (b.Id == book.Id) flag = true;
+        //    string newbooks = JsonSerializer.Serialize(books, options);
+        //    File.WriteAllText("Data/" + MainId + "/books.json", newbooks);
 
-                if (!flag) thiscoll[ind].Books.Add(book);
-            }
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string newcol = JsonSerializer.Serialize(collections, options);
-            File.WriteAllText("Data/collections.json", newcol);
-        }
+        //    this.ResaveUserData();
+        //    //this.Sort();
+        //    //string newcol = JsonSerializer.Serialize(collections, options);
+        //    //File.WriteAllText("Data/collections.json", newcol);
+        //}
 
-        public void ResaveUserData(List<Collection> collections)
-        {
-            var options = new JsonSerializerOptions { WriteIndented = true };
 
-            string stringUD = File.ReadAllText("Data/collections.json");
-            List<UserData> Userdatas = JsonSerializer.Deserialize<List<UserData>>(stringUD);
-            for (int i = 0; i < Userdatas.Count; i++)
-            {
-                if (Userdatas[i].DataId == MainId)
-                {
-                    Userdatas[i].Collections = collections;
-                    break;
-                }
-            }
 
-            string newusersdata = JsonSerializer.Serialize(Userdatas, options);
-            File.WriteAllText("Data/collections.json", newusersdata);
-        }
+
+        //public void Sort()
+        //{
+        //    collections[0].Books.OrderByDescending(b => b.Rating);
+        //    collections[1].Books.OrderByDescending(b => b.Rating);
+        //}
+
     }
 }
