@@ -1,16 +1,12 @@
-﻿using Documents.Models;
-using Documents.Models;
+using WriterApp.Models;
 
-namespace Documents.Data
+namespace WriterApp.Data
 {
     public interface IBookRepository
-        {
-            List<Book> GetAll();
-            Book? TryGetById(Guid id);
-            void Change(Book book);
-            void ChangeStatus(Book book, bool status);
-            void Delete(Book book);
-            void Resave();
-            //void Sort();
+    {
+        void Change(Book book);
+        void ChangeStatus(Guid id);
+        void Delete(Guid id);
+        void Resave();
     }
 }
