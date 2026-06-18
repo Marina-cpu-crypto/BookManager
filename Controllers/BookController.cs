@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Documents.Data;
 using Documents.Models;
@@ -8,36 +8,38 @@ namespace Documents.Controllers
     public class BookController : Controller
     {
         IBookRepository bookRepository;
+        ICollectionsRepository collectionsRepository;
+
+        public Guid MainId = Guid.Parse(System.IO.File.ReadAllText("Data/MainId.txt"));
+        public BookController(IBookRepository bookRep, ICollectionsRepository collRep)
+        {
+            this.collectionsRepository = collRep;   
+            this.bookRepository = bookRep;
+        }
+
 
         public IActionResult Index(Guid id)
         {
-            var book = bookRepository.TryGetById(id);
+            var book = collectionsRepository.TryGetById(id);
             return View(book);
         }
-
-        public BookController(IBookRepository bookRep)
-        {
-            this.bookRepository = bookRep;
-        }
+        
         public IActionResult Redact(Guid id)
         {
-            var book = bookRepository.TryGetById(id);
+            var book = collectionsRepository.TryGetById(id);
             return View(book);
         }
 
         public IActionResult ChangeStatus(Guid id)
         {
-            var book = bookRepository.TryGetById(id);
-            book.IsDone = !book.IsDone;
-
-            bookRepository.ChangeStatus(book,book.IsDone);
+            bookRepository.ChangeStatus(id);
             
             return RedirectToAction("Index", new { id = id });
         }
 
         public IActionResult SetRating(Guid id, int rating)
         {
-            var book = bookRepository.TryGetById(id);
+            var book = collectionsRepository.TryGetById(id);
             book.Rating = rating;
 
             bookRepository.Change(book);
@@ -46,29 +48,30 @@ namespace Documents.Controllers
             return RedirectToAction("Index", new { id = id });
         }
 
-        public IActionResult ChangeImage(Guid id, string PathImage)
-        {
-            var book = bookRepository.TryGetById(id);
-            book.PathImage = PathImage;
-            bookRepository.Change(book);
+        //public IActionResult ChangeImage(Guid id, string PathImage)
+        //{
+        //    var book = collectionsRepository.TryGetById(id);
+        //    book.PathImage = PathImage;
+        //    bookRepository.Change(book);
 
-            return RedirectToAction("Index","Book" ,new { id = id });
-        }
+        //    return RedirectToAction("Index","Book" ,new { id = id });
+        //}
 
-        public IActionResult Save(Guid Id, string Name, string Author, string Genre, string bookText, string Description)
+        public IActionResult Save(Guid Id, string Name, string Author, string Genre, string bookText, string Description, string PathImage)
         {
-            Book book = bookRepository.TryGetById(Id);
+            Book book = collectionsRepository.TryGetById(Id);
 
             if(book.Name != Name)
             {
-                System.IO.File.Delete("Data/Texts/"+book.Name+".txt");
+                System.IO.File.Delete("Data/"+MainId+"/Texts/"+book.Name+".txt");
                 book.Name = Name;
             }
             book.Author = Author;
             book.Genre = Genre;
             book.Description = Description;
+            book.PathImage = PathImage;
 
-            string file = "Data/Texts/" + Name + ".txt";
+            string file = "Data/" + MainId + "/Texts/" + Name + ".txt";
             System.IO.File.WriteAllText(file, bookText);
 
             bookRepository.Change(book);
@@ -78,8 +81,7 @@ namespace Documents.Controllers
 
         public IActionResult Delete(Guid Id)
         {
-            var book = bookRepository.TryGetById(Id);
-            bookRepository.Delete(book);
+            bookRepository.Delete(Id);
 
             return RedirectToAction("Index", "Home");
         }

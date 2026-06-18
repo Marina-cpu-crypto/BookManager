@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<IBookRepository, AllBooksFromFile>();
 builder.Services.AddSingleton<ICollectionsRepository, AllCollectionsFromFile>();
+builder.Services.AddSingleton<IUserRepository, AllUsersFromFile>();
 
 var app = builder.Build();
 

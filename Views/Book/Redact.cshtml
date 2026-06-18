@@ -1,4 +1,4 @@
-﻿@model Book
+@model Book
 
 @{
     ViewData["Title"] = "Подробнее о книге";
@@ -9,58 +9,43 @@
 }
 
 
-<form>
+<form
+    style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:18px;
+    border-radius:20px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.12);">
     <p>
-        <label>Название</label> <input type="text" value="@Model.Name" style="width:auto;" name="Name"/>
-        <label>Автор</label> <input type="text" value="@Model.Author" style="width:auto;" name="Author" />
-        <label>Жанр</label> <input type="text" value="@Model.Genre" style="width:auto;" name="Genre" />
+        <label class="search-input">Название</label> <input class="search-input" type="text" value="@Model.Name" style="width:auto;" name="Name" />
+        <label class="search-input">Автор</label> <input class="search-input"  type="text" value="@Model.Author" style="width:auto;" name="Author" />
+        <label class="search-input">Жанр</label> <input class="search-input" type="text" value="@Model.Genre" style="width:auto;" name="Genre" />
     </p>
     <div style="display:flex; flex-direction:row">
         <p>
-            <label>Текст</label><br />
-            <textarea style="height:400px; width:800px; margin-inline:60px;"
-            @* value="@booktext" *@
+            <label class="search-input">Текст</label><br/>
+            <textarea style="height:300px; width:800px; margin-inline:60px;"
             name="bookText"
-            rows="10" cols="50">@booktext</textarea>
-
-            @* <input type="text"  /><br /> *@
+            rows="8" cols="50">@booktext</textarea>
 
         <div class="w-30">
             <p>
-                <label>Текущее описание сюжета</label><br />
-                <input type="text" style="width:350px; height:200px;" value="@Model.Description" name="Description"/>
+                 <label class="search-input">Текущее описание сюжета</label><br />
+                 <input type="text" style="width:350px; height:300px; border-radius:4px;" value="@Model.Description" name="Description" />
             </p>
             
         </div>
+            
     </div>
-
-    <button class="btn btn-outline-success"
+    <div style="display:flex; flex-direction:row">
+        <input class="search-input" placeholder="Ссылка на изображение" name="PathImage" value="@Model.PathImage"/>
+        <button class="btn btn-outline-success"
             type="submit"
             asp-controller="Book"
             asp-action="Save"
             asp-route-Id="@Model.Id">Сохранить изменения </button>
-    
+
+        <a class="btn btn-outline-danger"
+           asp-controller="Book"
+           asp-action="Delete"
+           asp-route-Id="@Model.Id">Удалить книгу</a>
+    </div>
 </form>
 
-<p>
-    <label>Изображение-обложка</label><br />
-    <img src="@Model.PathImage" style="width:350px; height:350px; margin:30px;" />
-
-    <form>
-        <button type="submit" asp-controller="Book" asp-action="ChangeImage" asp-route-id="@Model.Id">Заменить изображение:</button>
-        <input placeholder="Ссылка на изображение" name="PathImage" />
-    </form>
-</p>
-
-<a class="btn btn-outline-danger"
-        asp-controller="Book"
-        asp-action="Delete"
-        asp-route-Id="@Model.Id">Удалить книгу</a>
-
-
-@* <form>
-    <input type="text" placeholder="@Model.Name" style="width:auto;" name="Name" />
-    <input type="text" style="height:400px; width:800px; margin-inline:60px;" name="bookText" /><br />
-    <input type="text" style="width:350px; height:200px;" name="Description" />
-    <button class="btn btn-outline-success" type="submit" asp-controller="Book" asp-action="Save" asp-route-Id="@Model.Id"> Сохранить изменения </button>
-</form> *@
+   
