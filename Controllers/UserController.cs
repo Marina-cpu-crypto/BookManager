@@ -1,54 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Documents.Models;
+using WriterApp.Models;
+using System.IO;
 using static System.Reflection.Metadata.BlobBuilder;
+using WriterApp.Data;
 
-namespace Documents.Controllers
+namespace WriterApp.Controllers
 {
     public class UserController : Controller
     {
+        IUserRepository userRepository;
+        List<User> users;
+
+        public UserController(IUserRepository userRep)
+        {
+            userRepository = userRep;
+            users = userRepository.GetAll();
+        }
+
         public IActionResult Index()
         {
             return View();
         }
         public IActionResult Registration(string Name, string Email)
         {
-            string jsonString = System.IO.File.ReadAllText("Data/users.json");
-            var users = JsonSerializer.Deserialize<List<User>>(jsonString);
+            bool flag = true;
 
-            User user = new User(Name, Email);
-
-            if (users.Count == 1)
+            foreach (var u in users)
             {
+                if (u.Email == Email)
+                {
+                    flag = false;
+                    System.IO.File.WriteAllText("Data/MainId.txt", Convert.ToString(u.UserId));
+                    break;
+                }
+            }
+            if (flag)
+            {
+                User user = new User(Name, Email);
                 users.Add(user);
-                UserData userData = new UserData(user.UserId);
 
                 var options = new JsonSerializerOptions { WriteIndented = true };
-
                 string newuser = JsonSerializer.Serialize(users, options);
                 System.IO.File.WriteAllText("Data/users.json", newuser);
 
-                string stringUD = System.IO.File.ReadAllText("Data/collections.json");
-                List<UserData> Userdatas = JsonSerializer.Deserialize<List<UserData>>(stringUD);
-                Userdatas.Add(userData);
-
-                string newusersdata = JsonSerializer.Serialize(Userdatas, options);
-                System.IO.File.WriteAllText("Data/collections.json",newusersdata);
+                userRepository.Save(user.UserId);
             }
-            else
-            {
-                foreach (var u in users)
-                {
-                    if (u.Email == Email)
-                    {
-                        System.IO.File.WriteAllText("Data/MainId.txt", Convert.ToString(u.UserId));
-                        break;
-                    }
-                    
-                }
-            }
-            
             return RedirectToAction("Index", "Home");
         }
     }
