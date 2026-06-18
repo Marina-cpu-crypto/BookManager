@@ -28,14 +28,14 @@
                 </div>
 
                 <p class="search-input" style="font-size:large">Кратко сюжет:</p>
-                <input style="width:300px; height:200px; border-radius:10px" value="@Model.Description">
+                <textarea readonly class="search-input" style="width:300px; height:200px; resize:none;">@Model.Description</textarea>
             </div>
         <img style="width:400px; height:400px; margin-inline: 2rem; border-radius:10px" src="@Model.PathImage">
         </div>
 
         <div style="display:flex; flex-direction:column;">
         <p class="search-input" style="width:160px; font-size:large">Ваша рецензия:</p>
-            <input style="width:900px; height:100px; border-radius:10px" value="@booktext" readonly />
+            <textarea readonly class="search-input" style="width:900px; height:100px; resize:none;">@booktext</textarea>
 
             <div style="display:flex; flex-direction:row">
                 <p class="search-input" style="margin: 20px; width:130px;">@status</p>

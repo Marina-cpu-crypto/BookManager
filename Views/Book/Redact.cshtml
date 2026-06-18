@@ -20,7 +20,7 @@
     </p>
     <div style="display:flex; flex-direction:row">
         <p>
-            <label class="search-input">Текст</label><br/>
+            <label class="search-input">Рецензия</label><br/>
             <textarea style="height:300px; width:800px; margin-inline:60px;"
             name="bookText"
             rows="8" cols="50">@booktext</textarea>
@@ -28,7 +28,7 @@
         <div class="w-30">
             <p>
                  <label class="search-input">Текущее описание сюжета</label><br />
-                 <input type="text" style="width:350px; height:300px; border-radius:4px;" value="@Model.Description" name="Description" />
+                 <textarea class="search-input" style="width:350px; height:300px; resize:none;" name="Description">@Model.Description</textarea>
             </p>
             
         </div>
