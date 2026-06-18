@@ -18,16 +18,18 @@
 
         <div style="width: 40rem; margin-inline: 2rem; display:flex; flex-direction:row">
             <div style="width: 18rem; margin-inline: 2rem">
-                <h3 class="align-self-xxl-start" style="width: auto; border-radius:20px;">@Model.Name</h3>
-                <div style="display:flex; flex-direction:row">
-                <p class="search-input" style="width:80px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Автор:</p><p style="margin: 20px;">@Model.Author</p>
+                <h3 class="align-self-xxl-start" style="width:auto; border-radius:20px; margin-bottom:12px;">@Model.Name</h3>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                    <span class="search-input" style="width:70px; text-align:center;">Автор:</span>
+                    <span style="font-weight:500;">@Model.Author</span>
                 </div>
 
-                <div style="display:flex; flex-direction:row">
-                <p class="search-input" style="width:80px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Жанр:</p><p style="margin: 20px;">@Model.Genre</p>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <span class="search-input" style="width:70px; text-align:center;">Жанр:</span>
+                    <span style="font-weight:500;">@Model.Genre</span>
                 </div>
 
-                <p class="search-input" style="font-size:large">Кратко сюжет:</p>
+                <p class="search-input" style="font-size:large; margin-bottom:8px;">Описание сюжета:</p>
                 <textarea readonly class="search-input" style="width:300px; height:200px; resize:none;">@Model.Description</textarea>
             </div>
         <img style="width:400px; height:400px; margin-inline: 2rem; border-radius:10px" src="@Model.PathImage">

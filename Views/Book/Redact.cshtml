@@ -11,37 +11,45 @@
 
 
 <form
-    style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:18px;
+    style="display:flex; flex-direction:column; gap:18px; padding:24px;
     border-radius:20px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.12);">
-    <p>
-        <label class="search-input">Название</label> <input class="search-input" type="text" value="@Model.Name" style="width:auto;" name="Name" />
-        <label class="search-input">Автор</label> <input class="search-input"  type="text" value="@Model.Author" style="width:auto;" name="Author" />
-        <label class="search-input">Жанр</label> <input class="search-input" type="text" value="@Model.Genre" style="width:auto;" name="Genre" />
-    </p>
-    <div style="display:flex; flex-direction:row">
-        <p>
-            <label class="search-input">Рецензия</label><br/>
-            <textarea style="height:300px; width:800px; margin-inline:60px;"
-            name="bookText"
-            rows="8" cols="50">@booktext</textarea>
 
-        <div class="w-30">
-            <p>
-                 <label class="search-input">Текущее описание сюжета</label><br />
-                 <textarea class="search-input" style="width:350px; height:300px; resize:none;" name="Description">@Model.Description</textarea>
-            </p>
-            
+    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+        <div>
+            <label class="search-input">Название</label>
+            <input class="search-input" type="text" value="@Model.Name" name="Name" />
         </div>
-            
+        <div>
+            <label class="search-input">Автор</label>
+            <input class="search-input" type="text" value="@Model.Author" name="Author" />
+        </div>
+        <div>
+            <label class="search-input">Жанр</label>
+            <input class="search-input" type="text" value="@Model.Genre" name="Genre" />
+        </div>
     </div>
-    <div style="display:flex; flex-direction:row">
-        <input class="search-input" placeholder="Ссылка на изображение" name="PathImage" value="@Model.PathImage"/>
+
+    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:300px;">
+            <label class="search-input">Описание сюжета</label>
+            <textarea class="search-input" style="width:100%; height:250px; resize:none; margin-top:8px;" name="Description">@Model.Description</textarea>
+        </div>
+        <div style="flex:1; min-width:300px;">
+            <label class="search-input">Рецензия</label>
+            <textarea class="search-input" style="width:100%; height:250px; resize:none; margin-top:8px;" name="bookText">@booktext</textarea>
+        </div>
+    </div>
+
+    <div style="display:flex; align-items:end; gap:15px; flex-wrap:wrap;">
+        <div>
+            <label class="search-input">Ссылка на изображение</label>
+            <input class="search-input" style="width:300px; margin-top:8px;" name="PathImage" value="@Model.PathImage" placeholder="URL картинки"/>
+        </div>
         <button class="btn btn-outline-success"
             type="submit"
             asp-controller="Book"
             asp-action="Save"
-            asp-route-Id="@Model.Id">Сохранить изменения </button>
-
+            asp-route-Id="@Model.Id">Сохранить изменения</button>
         <a class="btn btn-outline-danger"
            asp-controller="Book"
            asp-action="Delete"
