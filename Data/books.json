@@ -2,17 +2,23 @@
   {
     "Id": "8541406f-951d-4491-9b33-e710a7117928",
     "Name": "Hero",
-    "Author": "М.Ю. Лермонтов",
-    "Genre": "Поэма",
+    "Author": "\u041C.\u042E. \u041B\u0435\u0440\u043C\u043E\u043D\u0442\u043E\u0432",
+    "Genre": "\u041F\u043E\u044D\u043C\u0430",
+    "IsDone": false,
+    "Rating": 0,
     "Description": "Barsssssssssss",
-    "IsRead": true
+    "PathImage": "",
+    "PageNumber": null
   },
   {
     "Id": "8541406f-951d-4491-9b33-e710a7117929",
     "Name": "Ghost",
     "Author": "Anna",
-    "Genre": "Экшен",
+    "Genre": "\u042D\u043A\u0448\u0435\u043D",
+    "IsDone": true,
+    "Rating": 0,
     "Description": "Barsssssssssss",
-    "IsRead": true
+    "PathImage": "",
+    "PageNumber": null
   }
 ]

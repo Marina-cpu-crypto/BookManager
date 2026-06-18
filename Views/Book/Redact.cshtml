@@ -1,4 +1,4 @@
-@model Book
+﻿@model Book
 
 @{
     ViewData["Title"] = "Подробнее о книге";
@@ -11,7 +11,7 @@
 
 <form>
     <p>
-        <label>Название</label> <input type="text" value="@Model.Name" style="width:auto;" name="Name" />
+        <label>Название</label> <input type="text" value="@Model.Name" style="width:auto;" name="Name"/>
         <label>Автор</label> <input type="text" value="@Model.Author" style="width:auto;" name="Author" />
         <label>Жанр</label> <input type="text" value="@Model.Genre" style="width:auto;" name="Genre" />
     </p>
@@ -19,29 +19,27 @@
         <p>
             <label>Текст</label><br />
             <textarea style="height:400px; width:800px; margin-inline:60px;"
-                      @* value="@booktext" *@
-                      name="bookText"
-                      rows="10" cols="50">@booktext</textarea>
+            @* value="@booktext" *@
+            name="bookText"
+            rows="10" cols="50">@booktext</textarea>
 
             @* <input type="text"  /><br /> *@
 
-            <div class="w-30">
-                <p>
-                    <label>Текущее описание сюжета</label><br />
-                    <input type="text" style="width:350px; height:200px;" value="@Model.Description" name="Description" />
-                </p>
-
-            </div>
+        <div class="w-30">
+            <p>
+                <label>Текущее описание сюжета</label><br />
+                <input type="text" style="width:350px; height:200px;" value="@Model.Description" name="Description"/>
+            </p>
+            
+        </div>
     </div>
 
     <button class="btn btn-outline-success"
             type="submit"
             asp-controller="Book"
             asp-action="Save"
-            asp-route-Id="@Model.Id">
-        Сохранить изменения
-    </button>
-
+            asp-route-Id="@Model.Id">Сохранить изменения </button>
+    
 </form>
 
 <p>
@@ -55,9 +53,9 @@
 </p>
 
 <a class="btn btn-outline-danger"
-   asp-controller="Book"
-   asp-action="Delete"
-   asp-route-Id="@Model.Id">Удалить книгу</a>
+        asp-controller="Book"
+        asp-action="Delete"
+        asp-route-Id="@Model.Id">Удалить книгу</a>
 
 
 @* <form>
