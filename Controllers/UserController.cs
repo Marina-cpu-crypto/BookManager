@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
-using WriterApp.Models;
+using Documents.Models;
 using System.IO;
 using static System.Reflection.Metadata.BlobBuilder;
-using WriterApp.Data;
+using Documents.Data;
 
-namespace WriterApp.Controllers
+namespace Documents.Controllers
 {
     public class UserController : Controller
     {

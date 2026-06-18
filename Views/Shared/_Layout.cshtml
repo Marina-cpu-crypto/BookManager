@@ -4,7 +4,7 @@
     string jsonString = System.IO.File.ReadAllText("Data/users.json");
     var users = JsonSerializer.Deserialize<List<User>>(jsonString);
 
-    string name = "WriterApp";
+    string name = "Documents";
 
     foreach(var user in users)
     {

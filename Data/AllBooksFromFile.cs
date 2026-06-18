@@ -1,11 +1,11 @@
 using Microsoft.Extensions.Options;
 using System.Text.Json;
-using WriterApp.Data;
-using WriterApp.Models;
-using WriterApp.Controllers;
+using Documents.Data;
+using Documents.Models;
+using Documents.Controllers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace WriterApp.Data
+namespace Documents.Data
 {
     public class AllBooksFromFile : IBookRepository
     {

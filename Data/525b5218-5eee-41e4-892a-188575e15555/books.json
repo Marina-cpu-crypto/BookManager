@@ -1,0 +1,46 @@
+[
+  {
+    "Id": "8541406f-951d-4491-9b33-e710a7117928",
+    "Name": "Hero",
+    "Author": "Lermontov",
+    "Genre": "\u042D\u043A!!!\u0448\u0435\u043D",
+    "IsDone": true,
+    "Rating": 7,
+    "Description": "Barsssssssssss",
+    "PathImage": "/images/Mziry.png",
+    "PageNumber": null
+  },
+  {
+    "Id": "8541406f-951d-4491-9b33-e710a7117929",
+    "Name": "Ghost",
+    "Author": "Author",
+    "Genre": "\u042D\u043A\u0448\u0435\u043D",
+    "IsDone": false,
+    "Rating": 16,
+    "Description": "NewDescript",
+    "PathImage": "/images/mini-Ghost.jpg",
+    "PageNumber": null
+  },
+  {
+    "Id": "96db904e-bcc5-47da-b3e8-256fcdb6ecc8",
+    "Name": "Better)Yes",
+    "Author": "Me!",
+    "Genre": "Speed!!",
+    "IsDone": false,
+    "Rating": 8,
+    "Description": "NewDescript",
+    "PathImage": "https://images.ctfassets.net/lzny33ho1g45/4voBbskETv5HyFtBaoGIWJ/73f98fe137cae93720faed58961185a7/deepseek-hero.jpg?fm=jpg\u0026q=31\u0026fit=thumb\u0026w=1520\u0026h=760",
+    "PageNumber": null
+  },
+  {
+    "Id": "4d3ed2a9-3881-4a64-a627-d6cf0cf5aa05",
+    "Name": "Sparts!!!!",
+    "Author": "Calliope",
+    "Genre": "War",
+    "IsDone": true,
+    "Rating": 5,
+    "Description": "Victory",
+    "PathImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1971zol_Ff0LWhUNQBaxXNnUo4ZrD1bkYUONEKZd06keiOiNtixGOMS98ntcDwrwytfhldfB8qQsUTsLWYN8OJN7BUsq9o-mHT7caGZs\u0026s",
+    "PageNumber": null
+  }
+]

@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Text.Json;
-using WriterApp.Data;
-using WriterApp.Models;
+using Documents.Data;
+using Documents.Models;
 using static System.Reflection.Metadata.BlobBuilder;
 
-namespace WriterApp.Controllers
+namespace Documents.Controllers
 {
     public class HomeController : Controller
     {

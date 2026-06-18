@@ -1,6 +1,6 @@
-﻿using WriterApp.Models;
+﻿using Documents.Models;
 
-namespace WriterApp.Data
+namespace Documents.Data
 {
     public interface IUserRepository
     {

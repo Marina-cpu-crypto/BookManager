@@ -1,4 +1,4 @@
-namespace WriterApp.Models
+namespace Documents.Models
 {
     public class Book
     {

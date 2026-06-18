@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using WriterApp.Data;
-using WriterApp.Models;
+using Documents.Data;
+using Documents.Models;
 
-namespace WriterApp.Controllers
+namespace Documents.Controllers
 {
     public class BookController : Controller
     {
